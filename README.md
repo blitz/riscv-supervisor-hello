@@ -16,3 +16,9 @@ To run (with qemu >= 4.1):
 ```
 
 The `addr=` parameter must equal the entry point of the kernel.
+
+# Resources
+
+- https://github.com/riscv/riscv-sbi-doc/blob/master/riscv-sbi.adoc
+- https://riscv.org/wp-content/uploads/2015/01/riscv-calling.pdf
+- https://wiki.qemu.org/Documentation/Platforms/RISCV
