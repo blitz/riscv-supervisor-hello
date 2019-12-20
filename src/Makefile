@@ -16,7 +16,7 @@ install: kernel.bin kernel.elf
 	mkdir -p $(TARGET)
 	install -m 0755 $^ $(TARGET)/
 
-kernel.elf: kernel.lds start.S kernel.c
+kernel.elf: kernel.lds start.S kernel.cpp
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ -T $^
 
 kernel.bin: kernel.elf

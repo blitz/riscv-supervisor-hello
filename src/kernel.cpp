@@ -1,4 +1,5 @@
-extern void sbi_putchar(int c);
+extern "C" void sbi_putchar(int c);
+extern "C" void start();
 
 static void print(const char *str)
 {
