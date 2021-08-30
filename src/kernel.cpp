@@ -55,7 +55,7 @@ namespace {
 
 void start()
 {
-  print("\nHello World!\n");
+  print("\n>>> Reached C++ code. :-)\n");
 
   // An identity mapped 1 GB page at 2 GB
   root_pt[2] = PTE_V | PTE_R | PTE_W | PTE_X | (2UL << 28); // page frames do not start at PAGE_SHIFT
@@ -63,5 +63,5 @@ void start()
   sfence_vma();
   write_csr<CSR_SATP>(SATP_MODE_SV39 | (reinterpret_cast<mword_t>(root_pt) >> PAGE_SHIFT));
 
-  print("Paging enabled\n");
+  print(">>> Paging enabled.\n");
 }
