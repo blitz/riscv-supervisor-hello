@@ -10,7 +10,7 @@ rec {
   kernel = riscvPkgs.callPackage ./build.nix { };
 
   bootScript = pkgs.writeShellScriptBin "boot" ''
-    exec ${pkgs.qemu}/bin/qemu-system-riscv64 -M virt -m 256M -serial stdio \
+    exec ${pkgs.qemu}/bin/qemu-system-riscv64 -display none -M virt -m 256M -serial stdio \
          -bios default $*
   '';
 }
