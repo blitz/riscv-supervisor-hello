@@ -1,4 +1,4 @@
-{ stdenv, cmake }:
+{ stdenv }:
 
 stdenv.mkDerivation {
   pname = "riscv-hello";
