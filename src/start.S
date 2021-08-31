@@ -14,8 +14,15 @@ dead:	wfi
 sbi_putchar:
 	li a6, 0
 	li a7, 1
+ecall:
 	ecall
 	ret
+
+	.global sbi_shutdown
+sbi_shutdown:
+	li a6, 0
+	li a7, 8
+	j ecall
 	
 	.bss
 	.align 12

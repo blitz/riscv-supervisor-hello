@@ -1,3 +1,5 @@
+#include "memory.h"
+
 OUTPUT_ARCH( "riscv" )
 ENTRY(init)
 
@@ -9,9 +11,8 @@ PHDRS {
 
 SECTIONS
 {
-  /* RAM is typically mapped here. */
-  . = 0x80200000;
-  .text (0x80200000) :
+  . = LOAD_ADDRESS;
+  .text (LOAD_ADDRESS) :
   {
     *(.text.init)
     *(.text .text.*)

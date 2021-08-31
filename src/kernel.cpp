@@ -1,4 +1,7 @@
+#include "memory.h"
+
 extern "C" void sbi_putchar(int c);
+extern "C" void sbi_shutdown(void);
 extern "C" void start();
 
 namespace {
@@ -39,7 +42,7 @@ namespace {
     asm volatile ("sfence.vma x0, x0");
   }
 
-  alignas(PAGE_SIZE) mword_t root_pt[512];
+  alignas(PAGE_SIZE) mword_t pt_lvl0[512];
 
   enum {
 	PTE_V = 1UL << 0,
@@ -48,6 +51,8 @@ namespace {
 	PTE_X = 1UL << 3,
 	PTE_U = 1UL << 4,
 	PTE_G = 1UL << 5,
+	PTE_A = 1UL << 6,
+	PTE_D = 1UL << 7,
   };
 }
 
@@ -57,11 +62,15 @@ void start()
 {
   print("\n>>> Reached C++ code. :-)\n");
 
-  // An identity mapped 1 GB page at 2 GB
-  root_pt[2] = PTE_V | PTE_R | PTE_W | PTE_X | (2UL << 28); // page frames do not start at PAGE_SHIFT
+  // An identity mapped 1 GB page at the load address.
+  //
+  // Setting A/D is important for hardware that generates page faults
+  // when these are not set.
+  pt_lvl0[LOAD_ADDRESS >> 30] = PTE_V | PTE_R | PTE_W | PTE_X | PTE_A | PTE_D | ((LOAD_ADDRESS >> 30) << 28);
 
   sfence_vma();
-  write_csr<CSR_SATP>(SATP_MODE_SV39 | (reinterpret_cast<mword_t>(root_pt) >> PAGE_SHIFT));
+  write_csr<CSR_SATP>(SATP_MODE_SV39 | (reinterpret_cast<mword_t>(pt_lvl0) >> PAGE_SHIFT));
 
-  print(">>> Paging enabled.\n");
+  print(">>> Paging enabled.\n\n");
+  sbi_shutdown();
 }
